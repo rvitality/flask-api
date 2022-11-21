@@ -9,11 +9,6 @@ app = Flask(__name__)
 CORS(app, resources={r"*": {"origins": "*"}})
 
 
-@app.route("/")
-def hello_world():
-    return "Hello, World!"
-
-
 @app.get("/api/get_sarima_rate")
 def get_sarima_rate():
     forecast = predict_rate()
@@ -64,8 +59,9 @@ def add_official_rate():
 
     # run prediction
     next_month_predicted_rate = get_sarima_rate()
+    last_rate_data = get_last_rate_data()
 
-    return next_month_predicted_rate
+    return {**next_month_predicted_rate, **last_rate_data}
 
 
 if __name__ == "__main__":
